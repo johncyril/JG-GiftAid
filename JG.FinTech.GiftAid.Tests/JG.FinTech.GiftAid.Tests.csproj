@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
@@ -10,6 +10,6 @@
     <PackageReference Include="NSubstitute" Version="3.1.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\JG.FinTechTest\JG.FinTechTest.csproj" />
+    <ProjectReference Include="..\JG.FinTechTest\JG.FinTech.GiftAid.csproj" />
   </ItemGroup>
 </Project>
