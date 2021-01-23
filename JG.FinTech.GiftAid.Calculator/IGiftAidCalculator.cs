@@ -8,6 +8,6 @@
         /// <param name="donationAmount"></param>
         /// <param name="taxRate"></param>
         /// <returns></returns>
-        decimal Calculate(decimal donationAmount, decimal taxRate);
+        decimal Calculate(decimal donationAmount);
     }
 }

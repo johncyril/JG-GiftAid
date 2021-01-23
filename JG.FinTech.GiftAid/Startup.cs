@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Autofac;
+using JG.FinTech.GiftAid.Api.IoC;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace JG.FinTechTest
+namespace JG.FinTech.GiftAid.Api
 {
     public class Startup
     {
@@ -15,6 +16,8 @@ namespace JG.FinTechTest
         }
 
         public IConfiguration Configuration { get; }
+
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -40,6 +43,10 @@ namespace JG.FinTechTest
             {
                 endpoints.MapControllers();
             });
+        }
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new GiftAidModule(Configuration.GetValue<decimal>(ConfigurationConstants.GiftAidTaxRate, 0)));
         }
     }
 }
