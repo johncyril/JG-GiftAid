@@ -13,7 +13,7 @@ namespace JG.FinTech.GiftAid.Api.Integration.Tests
         public void ResolvesAllControllers()
         {
             var builder = new ContainerBuilder();
-            builder.RegisterModule(new GiftAidModule(20));
+            builder.RegisterModule(new GiftAidModule(20, 2, 100000));
             var container = builder.Build();
 
             var controllers = Assembly.GetAssembly(typeof(GiftAidController)).GetTypes().Where(t => t.IsInterface && t.Name.EndsWith("Controller"));

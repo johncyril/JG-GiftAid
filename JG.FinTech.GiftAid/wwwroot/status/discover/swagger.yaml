@@ -1,4 +1,4 @@
-swagger: '2.0'
+swagger: '3.0'
 info:
   title: Gift Aid Service
   version: 1.0.0
@@ -13,7 +13,10 @@ paths:
         - in: query
           name: amount
           type: number
-          required: true
+          required: true          
+          miniumum: 2
+          maximum: 100000            
+          description: The Donation Amount
       produces:
         - application/json
       responses:

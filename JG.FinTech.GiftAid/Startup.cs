@@ -39,14 +39,20 @@ namespace JG.FinTech.GiftAid.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+            app.UseOpenApi();
+            app.UseSwaggerUi3(); // TODO load the swagger yaml in wwwroot
         }
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterModule(new GiftAidModule(Configuration.GetValue<decimal>(ConfigurationConstants.GiftAidTaxRate, 0)));
+            var taxRate = Configuration.GetValue<decimal>(ConfigurationConstants.GiftAidTaxRate, 0);
+            var donationMinValue = Configuration.GetValue<decimal>(ConfigurationConstants.DonationMinumimValue, 0);
+            var donationMaxValue = Configuration.GetValue<decimal>(ConfigurationConstants.DonationMaxmimValue, 0);
+            builder.RegisterModule(new GiftAidModule(taxRate, donationMinValue, donationMaxValue));
         }
     }
 }
