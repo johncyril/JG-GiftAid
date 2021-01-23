@@ -32,6 +32,12 @@
     <ProjectReference Include="..\JG.FinTech.GiftAid.Calculator\JG.FinTech.GiftAid.Calculator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\status\discover\swagger.yaml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
   <Target Name="NSwag" BeforeTargets="BeforeBuild">
     <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Core31) run nswag.json  /variables:InputPath=$(MSBuildProjectDirectory)\wwwroot\status\discover\swagger.yaml">
       <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />

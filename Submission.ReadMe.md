@@ -46,10 +46,14 @@ I took the liberty to upgrade the project to core 3.1. having spoken with Callum
 	- It felt weird to "regenerate" swagger.json off an api which was itself generated from a swagger.yaml
 	- I do think serving the swagger.yaml file which already exists is possible, I just ended up down a bit of a rabbit hole
 	- Additionally, the swagger 3.0 spec allows maximum and minimum values to be supplied to query paramaters. Despite this being added, the controller generation doesn't generate any validation.
-		Nor, indeed does it generate any "required" attributes https://github.com/RicoSuter/NSwag/issues/1955
-		Indeed there appear to be a few short-coming using this generation mechanism. 
+		Indeed there appear to be a few short-coming using this generation mechanism. https://github.com/RicoSuter/NSwag/issues/1955
 	- I'm wondering if I've taken "use swagger spec as the basis for your API" a little to literally. Perhaps I shouldn't be re-generating the controllers based on swagger
 	- I ended up going down a *huge* nswag rabbit hole. Learned a lot. nswag.json now allows us to generate controllers with ActionResult return types, allowing for a decent response to go back to the client on validation.
 	- Considering if it would have been better to create a web-api project rather than keep the MVC one as part of the submission.
 
-
+- Story 4
+	- Speccing new endpoint using swagger.yaml and auto-generating controller
+	- I am *agonisingly close*. For some reason there isn't a good way to get a request object generated for the post request
+		I've tried with both openApi 3 and swagger 2.0 to no avail. 
+		Either I can generate a FromBody request object that isn't typed and lose my generated request resposne objects
+		Or I can generate without a parameter in the new post endpoint

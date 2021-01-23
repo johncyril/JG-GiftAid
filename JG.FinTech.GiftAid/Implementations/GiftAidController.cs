@@ -48,5 +48,10 @@ namespace JG.FinTech.GiftAid.Api.Implementations
                 throw new GiftAidException($"An error ocurred when calculating the GiftAid amount. {Environment.NewLine} {e.Message}");
             }
         }
+
+        public Task<ActionResult<GiftAidDeclarationResponse>> GiftaidDeclarationsAsync()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

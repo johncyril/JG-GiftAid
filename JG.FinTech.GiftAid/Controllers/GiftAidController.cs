@@ -23,6 +23,10 @@ namespace JG.FinTech.GiftAid.Api.Controllers
         /// <returns>OK</returns>
         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GiftAidResponse>> GiftaidAsync(double amount);
     
+        /// <summary>Submits a gift aid declatation</summary>
+        /// <returns>Created</returns>
+        System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GiftAidDeclarationResponse>> GiftaidDeclarationsAsync();
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.1.0 (NJsonSchema v10.3.3.0 (Newtonsoft.Json v12.0.0.0))")]
@@ -39,10 +43,18 @@ namespace JG.FinTech.GiftAid.Api.Controllers
         /// <summary>Get the amount of gift aid reclaimable for donation amount</summary>
         /// <param name="amount">The Donation Amount</param>
         /// <returns>OK</returns>
-        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("giftaid", Name = "giftaid")]
+        [Microsoft.AspNetCore.Mvc.HttpGet, Microsoft.AspNetCore.Mvc.Route("giftaid")]
         public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GiftAidResponse>> Giftaid([Microsoft.AspNetCore.Mvc.FromQuery] [Microsoft.AspNetCore.Mvc.ModelBinding.BindRequired] double amount)
         {
             return _implementation.GiftaidAsync(amount);
+        }
+    
+        /// <summary>Submits a gift aid declatation</summary>
+        /// <returns>Created</returns>
+        [Microsoft.AspNetCore.Mvc.HttpPost, Microsoft.AspNetCore.Mvc.Route("giftaid/declarations")]
+        public System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.ActionResult<GiftAidDeclarationResponse>> GiftaidDeclarations()
+        {
+            return _implementation.GiftaidDeclarationsAsync();
         }
     
     }
@@ -52,6 +64,36 @@ namespace JG.FinTech.GiftAid.Api.Controllers
     {
         [Newtonsoft.Json.JsonProperty("donationAmount", Required = Newtonsoft.Json.Required.Always)]
         public double DonationAmount { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("giftAidAmount", Required = Newtonsoft.Json.Required.Always)]
+        public double GiftAidAmount { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class GiftAidDeclaration 
+    {
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Name { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("postCode", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string PostCode { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("donationAmount", Required = Newtonsoft.Json.Required.Always)]
+        public double DonationAmount { get; set; }
+    
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.3.3.0 (Newtonsoft.Json v12.0.0.0)")]
+    public partial class GiftAidDeclarationResponse 
+    {
+        [Newtonsoft.Json.JsonProperty("token", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public string Token { get; set; }
     
         [Newtonsoft.Json.JsonProperty("giftAidAmount", Required = Newtonsoft.Json.Required.Always)]
         public double GiftAidAmount { get; set; }
