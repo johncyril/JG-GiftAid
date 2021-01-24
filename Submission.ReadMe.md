@@ -51,9 +51,24 @@ I took the liberty to upgrade the project to core 3.1. having spoken with Callum
 	- I ended up going down a *huge* nswag rabbit hole. Learned a lot. nswag.json now allows us to generate controllers with ActionResult return types, allowing for a decent response to go back to the client on validation.
 	- Considering if it would have been better to create a web-api project rather than keep the MVC one as part of the submission.
 
-- Story 4
+- Story 4.1
 	- Speccing new endpoint using swagger.yaml and auto-generating controller
 	- I am *agonisingly close*. For some reason there isn't a good way to get a request object generated for the post request
 		I've tried with both openApi 3 and swagger 2.0 to no avail. 
 		Either I can generate a FromBody request object that isn't typed and lose my generated request resposne objects
 		Or I can generate without a parameter in the new post endpoint
+- Story 4.2
+	- Using LiteDB for the first time is great!
+	- Considering the possibility that we may want to able to identify "duplicate" gift aid declarations. 
+		We don't have any concept of a CharityId as part of the declaration here, which we could use along with a time boundrary (of say 1 second)?
+		I think an elegant solution with what we have would be to hash the Declaration fields along with the request time to deterministically create an identifier and ensure we don't persist duplicate requests
+		As this hasn't been part of the exercise, I'll leave it as a stretch goal
+	- My implementaion for now will use the same poco for the database and for exposure beyond the repository
+		I do this with the awareness that it's poor practice to do so, i.e. if the document schema changes, a lot of code changes. But I have run well over of time 
+		I would have
+			- Created a "data store" class and interface
+			- Interfaces with would expose a "public" DTO for a donation
+			- The data store would make use of the IRepository and be responsible for the mapping between the repository object and the "public" DTO
+			- I've simply run out of time to write the code for this and the associated tests.
+			- Chosen ObjectId as the type for database document identifiers in LiteDb. However I didn't want LiteDb dependencies to exist on anything outside the repository. Hence use of a GUID
+		The repository could also certainly be genericised.
