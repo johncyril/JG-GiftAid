@@ -26,6 +26,7 @@ namespace JG.FinTech.GiftAid.Api
         {
             services.AddControllers()            
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GiftAidDeclarationValidator>());
+            services.AddSwaggerDocument(d => d.Title = "JustGiving.FinTech.GiftAid.Api");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

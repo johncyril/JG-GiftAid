@@ -86,3 +86,6 @@ I took the liberty to upgrade the project to core 3.1. having spoken with Callum
 		Auto-generating those controllers has resulted in further problems with not being able to access ModelState in the controller
 		Re-generating as an abstract class allowed me to now use the model state. Small annoyance of losing the Async suffix to the methods.
 		I actually think this is much cleaner and clearer. [ApiController] annotation makes things lovely
+- Documentation
+	- Couldn't find a way to serve up the swagger.yaml. 
+	- Documentation is generated in middleware
