@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using FluentValidation.AspNetCore;
 using JG.FinTech.GiftAid.Api.IoC;
+using JG.FinTech.GiftAid.Api.Validations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,8 @@ namespace JG.FinTech.GiftAid.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()            
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<GiftAidDeclarationValidator>());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,10 +52,12 @@ namespace JG.FinTech.GiftAid.Api
         }
         public void ConfigureContainer(ContainerBuilder builder)
         {
+            // Todo - could write smarter code here or a configuration abstraction to validate the absence of configuration
             var taxRate = Configuration.GetValue<decimal>(ConfigurationConstants.GiftAidTaxRate, 0);
             var donationMinValue = Configuration.GetValue<decimal>(ConfigurationConstants.DonationMinumimValue, 0);
             var donationMaxValue = Configuration.GetValue<decimal>(ConfigurationConstants.DonationMaxmimValue, 0);
-            builder.RegisterModule(new GiftAidModule(taxRate, donationMinValue, donationMaxValue));
+            var dbConnectionString= Configuration.GetConnectionString(ConfigurationConstants.GiftAidDb);
+            builder.RegisterModule(new GiftAidModule(taxRate, donationMinValue, donationMaxValue, dbConnectionString));
         }
     }
 }

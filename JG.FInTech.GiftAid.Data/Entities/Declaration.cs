@@ -27,6 +27,6 @@ namespace JG.FinTech.GiftAid.Data.Entities
         /// <summary>
         /// Donation amount
         /// </summary>
-        public int DonationAmount { get; set; }
+        public decimal DonationAmount { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 using JG.FinTech.GiftAid.Api.Controllers;
-using JG.FinTech.GiftAid.Api.Exceptions;
 using JG.FinTech.GiftAid.Api.Validations;
 using JG.FinTech.GiftAid.Calculator;
+using JG.FinTech.GiftAid.Data;
 using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
@@ -10,19 +10,22 @@ using System.Threading.Tasks;
 
 namespace JG.FinTech.GiftAid.Unit.Tests
 {
-    public class GiftAidControllerTests
+    public class GiftAidCalculationTests
     {
         private IGiftAidCalculator calculator { get; set; }
         private IDonationValidator validator { get; set; }
 
-        private IGiftAidController controllerUnderTest { get; set; }
+        private IRepository repository { get; set; }
+
+        private GiftAidController controllerUnderTest { get; set; }
 
         [SetUp]
         public void Setup()
         {
             calculator = Substitute.For<IGiftAidCalculator>();
             validator = Substitute.For<IDonationValidator>();
-            controllerUnderTest = new Api.Implementations.GiftAidController(calculator, validator);
+            repository = Substitute.For<IRepository>();
+            controllerUnderTest = new GiftAidController(calculator, validator, repository);
         }
 
         [Test]
@@ -33,7 +36,7 @@ namespace JG.FinTech.GiftAid.Unit.Tests
             calculator.Calculate(Arg.Any<decimal>()).ReturnsForAnyArgs(25);            
 
             // Act
-            var controllerResponse = await controllerUnderTest.GiftaidAsync(100);
+            var controllerResponse = await controllerUnderTest.Giftaid(100);
 
             // Assert
             var result = controllerResponse.Result as OkObjectResult;
@@ -44,14 +47,18 @@ namespace JG.FinTech.GiftAid.Unit.Tests
         }
 
         [Test]
-        public async Task Throws_When_CallToGiftAidCalculator_Fails()
+        public async Task ErrorResponse_When_CallToGiftAidCalculator_Fails()
         {
             // Arrange
             validator.Validate(Arg.Any<decimal>()).ReturnsForAnyArgs(new ValidationResponse { IsSuccess = true });
             calculator.Calculate(Arg.Any<decimal>()).ReturnsForAnyArgs(x => throw new System.Exception());            
 
-            // Act/Assert
-            Assert.ThrowsAsync<GiftAidException>(() => controllerUnderTest.GiftaidAsync(100), "An error ocurred when calculating the GiftAid amount");
+            // Act
+            var controllerRespone = await controllerUnderTest.Giftaid(100);
+
+            // Assert
+            var result = controllerRespone.Result as ObjectResult;
+            Assert.True(result.Value.ToString().Contains("An error ocurred when calculating the GiftAid amount"));
             calculator.Received().Calculate(100);
             validator.Received().Validate(100);
         }
@@ -64,7 +71,7 @@ namespace JG.FinTech.GiftAid.Unit.Tests
             calculator.Calculate(Arg.Any<decimal>()).ReturnsForAnyArgs(25);            
 
             // Act
-            var controllerResponse = await controllerUnderTest.GiftaidAsync(100);
+            var controllerResponse = await controllerUnderTest.Giftaid(100);
 
             // Assert
             validator.Received().Validate(100);

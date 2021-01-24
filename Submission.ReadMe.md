@@ -72,3 +72,17 @@ I took the liberty to upgrade the project to core 3.1. having spoken with Callum
 			- I've simply run out of time to write the code for this and the associated tests.
 			- Chosen ObjectId as the type for database document identifiers in LiteDb. However I didn't want LiteDb dependencies to exist on anything outside the repository. Hence use of a GUID
 		The repository could also certainly be genericised.
+- Story 4.3 
+	- Made *some* progress with swagger - It turns out my use of NSWAG studio to help debug what was going on was putting an enitre JSON payload of our swagger.yaml insude the nswag.json, masking any further changes I'd made.'
+		This caused a lot of problems and frustration
+		In short, it seems that providing a path to swagger.yaml from configuration file such as nswag.json doesn't work when trying all the obvious things
+		I've reverted to supplying paths on the command line and putting in the UseActionResult flag 
+		Very glad I've gotten this working, but the majority of my time has been spent on this!
+- Story 4.4
+	- With hindsight, could have used Fluent Validation for validating request payloads earlier on, instead of hand-cranking a validator.
+		This would have been much nicer, though perhaps would offer less "injectible config"
+		With more time, I would have gona back and changed this.
+	- Used FluentValidation for the GiftAidDeclaration endpoint. 
+		Auto-generating those controllers has resulted in further problems with not being able to access ModelState in the controller
+		Re-generating as an abstract class allowed me to now use the model state. Small annoyance of losing the Async suffix to the methods.
+		I actually think this is much cleaner and clearer. [ApiController] annotation makes things lovely

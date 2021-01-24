@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -18,6 +17,7 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="6.1.0" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.1.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="9.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />    
     <PackageReference Include="NSwag.AspNetCore" Version="13.10.1" />
     <PackageReference Include="NSwag.CodeGeneration.CSharp" Version="13.10.1" />
@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\JG.FinTech.GiftAid.Calculator\JG.FinTech.GiftAid.Calculator.csproj" />
+    <ProjectReference Include="..\JG.FInTech.GiftAid.Data\JG.FinTech.GiftAid.Data.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,11 +40,10 @@
   </ItemGroup>
 
   <Target Name="NSwag" BeforeTargets="BeforeBuild">
-    <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Core31) run nswag.json  /variables:InputPath=$(MSBuildProjectDirectory)\wwwroot\status\discover\swagger.yaml">
+    <Exec ConsoleToMSBuild="true" ContinueOnError="true" Command="$(NSwagExe_Core31) openapi2cscontroller /input:$(MSBuildProjectDirectory)\wwwroot\status\discover\swagger.yaml /classname:GiftAid /namespace:JG.FinTech.GiftAid.Api.Controllers /output:Controllers/GiftAidControllerBase.cs /UseLiquidTemplates:true /AspNetNamespace:Microsoft.AspNetCore.Mvc /ControllerBaseClass:Microsoft.AspNetCore.Mvc.Controller /useActionResultType:true /requiredPropertiesMustBeDefined:true /controllerStyle:abstract">
       <Output TaskParameter="ExitCode" PropertyName="NSwagExitCode" />
       <Output TaskParameter="ConsoleOutput" PropertyName="NSwagOutput" />
     </Exec>
-
     <Message Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' == '0'" Importance="low" />
     <Error Text="$(NSwagOutput)" Condition="'$(NSwagExitCode)' != '0'" />
   </Target>

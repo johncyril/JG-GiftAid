@@ -2,6 +2,7 @@
 using JG.FinTech.GiftAid.Api.Controllers;
 using JG.FinTech.GiftAid.Api.Validations;
 using JG.FinTech.GiftAid.Calculator;
+using JG.FinTech.GiftAid.Data.IoC;
 
 namespace JG.FinTech.GiftAid.Api.IoC
 {
@@ -12,18 +13,20 @@ namespace JG.FinTech.GiftAid.Api.IoC
     {
         private readonly decimal _donationMaxValue;
         private readonly decimal _donationMinValue;
-        private decimal _giftAidTaxRate { get; set; }
+        private readonly decimal _giftAidTaxRate;
+        private readonly string _databaseConnection;
 
-        public GiftAidModule(decimal giftAidTaxRate, decimal donationMinValue, decimal donationMaxValue)
+        public GiftAidModule(decimal giftAidTaxRate, decimal donationMinValue, decimal donationMaxValue, string databaseConnection)
         {
             _giftAidTaxRate = giftAidTaxRate;            
             _donationMinValue = donationMinValue;
             _donationMaxValue = donationMaxValue;
+            _databaseConnection = databaseConnection;
         }
 
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<Implementations.GiftAidController>().As<IGiftAidController>().InstancePerLifetimeScope();
+            builder.RegisterModule(new DataModule(_databaseConnection));            
             builder.Register(c => new GiftAidCalculator(_giftAidTaxRate)).As<IGiftAidCalculator>().InstancePerLifetimeScope();
             builder.Register(c => new DonationValidator(_donationMinValue, _donationMaxValue)).As<IDonationValidator>().InstancePerLifetimeScope();
         }
